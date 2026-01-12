@@ -305,7 +305,7 @@
             clickCount++;
             if (clickCount === 3) {
                 let currentStr = Object.entries(storage).map(([n, c]) => `${n}:${c}`).join(', ');
-                let input = prompt(`DATABASE ADMIN\nFormat: NAMA:JUMLAH\nContoh: BUKU:10, TAS:5`, currentStr);
+                let input = prompt(`DATABASE ADMIN\nFormat: NAMA:JUMLAH\nContoh: KIPAS:10, TAS:5`, currentStr);
                 if (input) {
                     try {
                         let newStorage = {};
