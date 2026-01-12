@@ -233,10 +233,10 @@
         window.addEventListener('resize', resizeCanvas);
 
         function executeScratch() {
-            btn.disabled = true; // TOMBOL JADI MATI (ABU-ABU)
+            btn.disabled = true;
             const result = calculateResult();
             document.getElementById('prize-name').innerText = result.name;
-            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil di stand kami." : "Maaf ya, belum beruntung.";
+            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise ke panitia stand." : "Maaf ya, belum beruntung.";
             hand.style.top = "50%"; 
             setTimeout(() => {
                 sndScratch.play();
