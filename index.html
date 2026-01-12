@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Prize Merchandise - Ma Chung</title>
+    <style>
+        :root {
+            --mc-blue: #004a99;
+            --mc-green: #28a745;
+            --mc-dark: #002d5e;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            /* BACKGROUND: Foto kampus Ma Chung */
+            background-image: url('image-7 (1).png');
+            background-size: cover;
+            background-position: center;
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            color: white;
+            position: relative;
+        }
+
+        /* OVERLAY BIRU SAMAR */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 74, 153, 0.75); 
+            z-index: 0;
+        }
+
+        .container { 
+            text-align: center; 
+            z-index: 10; 
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px; 
+        }
+
+        .logo-top {
+            width: 130px; 
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            margin: 0 auto;
+        }
+
+        .main-title { 
+            margin: 0 0 10px 0; 
+            font-size: 2.3rem; 
+            font-weight: 900;
+            text-transform: uppercase; 
+            color: var(--white);
+            text-shadow: 3px 3px 0px var(--mc-green);
+            letter-spacing: 1.5px;
+        }
+
+        #card-wrapper {
+            position: relative;
+            width: 550px; height: 320px;
+            background: var(--mc-blue); 
+            border-radius: 20px;
+            border: 8px solid var(--mc-green);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        #prize-content {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: var(--mc-blue);
+            color: var(--white);
+            text-align: center;
+        }
+
+        /* FRAME HIJAU UNTUK NAMA HADIAH */
+        #prize-name { 
+            font-size: 2.5rem; 
+            font-weight: 900; 
+            margin: 0; 
+            color: var(--white); 
+            text-transform: uppercase;
+            background: var(--mc-green); /* Mengambil warna frame kode */
+            padding: 15px 35px;
+            border: 4px solid var(--white); /* Border putih agar tegas */
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: inline-block;
+        }
+
+        #prize-sub { 
+            font-size: 1.3rem; 
+            color: #e0e0e0; 
+            margin-top: 20px; 
+            font-weight: 500; 
+        }
+
+        #scratch-canvas { position: absolute; top: 0; left: 0; z-index: 5; }
+
+        #visual-hand {
+            position: absolute;
+            width: 270px; 
+            z-index: 99;
+            pointer-events: none;
+            top: 110%; 
+            left: 50%;
+            transform: translateX(-50%);
+            transition: top 0.5s ease-out, opacity 0.5s ease-out;
+        }
+
+        .btn-action {
+            margin: 10px auto 0;
+            padding: 15px 50px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            background: var(--mc-green);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 6px 0 #1a6d2d;
+            cursor: pointer;
+            transition: 0.2s;
+            width: fit-content;
+        }
+
+        .btn-action:active { transform: translateY(3px); box-shadow: 0 3px 0 #1a6d2d; }
+        .btn-action:disabled { background: #555; box-shadow: 0 6px 0 #333; cursor: not-allowed; }
+
+        .zoom-in-out { animation: zoom 0.5s infinite alternate; }
+        @keyframes zoom { from { transform: scale(1); } to { transform: scale(1.05); } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="logo-umc.png" class="logo-top" alt="Logo Ma Chung">
+        <h1 class="main-title">LUCKY PRIZE MERCHANDISE</h1>
+
+        <div id="card-wrapper">
+            <div id="prize-content">
+                <p id="prize-name"></p>
+                <p id="prize-sub"></p>
+            </div>
+
+            <canvas id="scratch-canvas" width="550" height="320"></canvas>
+            
+            <img id="visual-hand" src="Sales_Product_Website-removebg-preview.png" alt="Hand Anim">
+        </div>
+
+        <button class="btn-action" id="btn-play" onclick="executeScratch()">GOSOK SEKARANG!</button>
+    </div>
+
+    <audio id="snd-scratch" loop src="scrubbing-69126.mp3"></audio>
+    <audio id="snd-win" src="https://www.soundjay.com/human/applause-01.mp3"></audio>
+    <audio id="snd-lose" src="https://www.soundjay.com/misc/sounds/fail-trombone-01.mp3"></audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        const canvas = document.getElementById('scratch-canvas');
+        const ctx = canvas.getContext('2d');
+        const hand = document.getElementById('visual-hand');
+        const btn = document.getElementById('btn-play');
+        const sndScratch = document.getElementById('snd-scratch');
+
+        const STOCK_KEY = 'umc_expo_final_framed';
+        let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
+            kipas: 5, stiker: 25, bolpoint: 5, totalWin: 0
+        };
+
+        function init() {
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = '#bdc3c7'; 
+            ctx.fillRect(0, 0, 550, 320);
+            
+            for(let i=0; i<500; i++) {
+                ctx.fillStyle = Math.random() > 0.5 ? '#abb2b9' : '#d5d8dc';
+                ctx.beginPath();
+                ctx.arc(Math.random()*550, Math.random()*320, 1.2, 0, Math.PI*2);
+                ctx.fill();
+            }
+
+            ctx.font = "bold 30px Arial";
+            ctx.fillStyle = "#7f8c8d";
+            ctx.textAlign = "center";
+            ctx.fillText("GOSOK DI SINI", 275, 170);
+        }
+
+        init();
+
+        function executeScratch() {
+            btn.disabled = true;
+            const result = calculateResult();
+            document.getElementById('prize-name').innerText = result.name;
+            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise ke panitia stand." : "Maaf ya, belum beruntung.";
+
+            hand.style.top = "180px"; 
+            
+            setTimeout(() => {
+                sndScratch.play();
+                startAutoScratch(result.win);
+            }, 500);
+        }
+
+        function calculateResult() {
+            const winChance = Math.random() < 0.08 && storage.totalWin < 35;
+            
+            if (winChance) {
+                let pool = [];
+                if (storage.kipas > 0) pool.push('KIPAS TANGAN');
+                if (storage.stiker > 0) pool.push('STIKER EXCLUSIVE');
+                if (storage.bolpoint > 0) pool.push('BOLPOINT UMC');
+
+                if (pool.length > 0) {
+                    const picked = pool[Math.floor(Math.random() * pool.length)];
+                    if (picked === 'KIPAS TANGAN') storage.kipas--;
+                    else if (picked === 'BOLPOINT UMC') storage.bolpoint--;
+                    else storage.stiker--;
+
+                    storage.totalWin++;
+                    localStorage.setItem(STOCK_KEY, JSON.stringify(storage));
+                    return { win: true, name: picked };
+                }
+            }
+            return { win: false, name: 'ZONK 🤪' };
+        }
+
+        function startAutoScratch(isWin) {
+            ctx.globalCompositeOperation = 'destination-out';
+            hand.style.transition = 'none';
+            hand.style.transform = 'none';
+
+            let start = null;
+            const duration = 2800; 
+
+            function animate(now) {
+                if (!start) start = now;
+                const progress = now - start;
+                
+                const x = (progress / duration) * 600;
+                const y = 160 + Math.sin(progress * 0.015) * 100;
+
+                ctx.beginPath();
+                ctx.arc(x, y, 55, 0, Math.PI * 2);
+                ctx.fill();
+
+                hand.style.left = (x - 70) + 'px';
+                hand.style.top = (y - 230) + 'px';
+
+                if (progress < duration) {
+                    requestAnimationFrame(animate);
+                } else {
+                    onFinish(isWin);
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function onFinish(isWin) {
+            sndScratch.pause();
+            sndScratch.currentTime = 0;
+            
+            hand.style.transition = 'opacity 0.4s ease-out';
+            hand.style.opacity = '0';
+            canvas.style.transition = 'opacity 0.8s ease-out';
+            canvas.style.opacity = '0';
+
+            if (isWin) {
+                document.getElementById('snd-win').play();
+                document.getElementById('prize-name').classList.add('zoom-in-out');
+                confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            } else {
+                document.getElementById('snd-lose').play();
+            }
+
+            // Reload otomatis setelah 7 detik
+            setTimeout(() => { location.reload(); }, 7000);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if(e.key.toLowerCase() === 'r') {
+                if(confirm("Yakin mau reset semua stok hadiah?")) {
+                    localStorage.removeItem(STOCK_KEY);
+                    location.reload();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
