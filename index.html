@@ -20,19 +20,17 @@
             background-color: var(--mc-dark);
             min-height: 100vh; 
             display: flex; flex-direction: column;
-            align-items: center; 
-            justify-content: flex-start; /* Biar gak mlorot ke bawah */
+            align-items: center; justify-content: flex-start;
             color: white;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* FIX BACKGROUND UNTUK HP */
         .bg-overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background-image: url('image-7 (1).png'); /* Pastikan file ini ada di GitHub */
+            background-image: url('image-7 (1).png'); 
             background-size: cover;
             background-position: center;
             z-index: -2;
@@ -51,7 +49,7 @@
             z-index: 10; 
             width: 100%;
             max-width: 600px;
-            padding: 4vh 15px 20px; /* Logo & Judul lebih naik ke atas */
+            padding: 4vh 15px 20px; 
             display: flex; flex-direction: column; gap: 5px; 
         }
 
@@ -59,17 +57,17 @@
             width: 85px; 
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             margin: 0 auto;
-            cursor: pointer; /* Area klik admin */
+            cursor: pointer;
         }
 
         .main-title { 
             margin: 5px 0 15px 0; 
-            font-size: 1.35rem; /* Ukuran pas biar 1 baris di HP */
+            font-size: 1.35rem; 
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
             text-shadow: 2px 2px 0px var(--mc-green);
-            white-space: nowrap; /* Paksa satu baris */
+            white-space: nowrap; 
             letter-spacing: 0.5px;
         }
 
@@ -142,7 +140,15 @@
             transition: 0.2s;
         }
 
-        /* LAPTOP STYLE (Gedein dikit) */
+        /* EFEK TOMBOL MATI (ABU-ABU TUA) */
+        .btn-action:disabled {
+            background: #333333 !important;
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+
         @media (min-width: 768px) {
             .logo-top { width: 120px; }
             .main-title { font-size: 2.3rem; margin-bottom: 20px; }
@@ -191,9 +197,11 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        const STOCK_KEY = 'umc_expo_db_final'; 
+        const STOCK_KEY = 'umc_expo_v_final_secure'; 
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
-            kipas: 5, stiker: 25, bolpoint: 5, totalWin: 0
+            "KIPAS TANGAN": 5, 
+            "STIKER EXCLUSIVE": 25, 
+            "BOLPOINT UMC": 5
         };
 
         let clickCount = 0;
@@ -225,7 +233,7 @@
         window.addEventListener('resize', resizeCanvas);
 
         function executeScratch() {
-            btn.disabled = true;
+            btn.disabled = true; // TOMBOL JADI MATI (ABU-ABU)
             const result = calculateResult();
             document.getElementById('prize-name').innerText = result.name;
             document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil di stand kami." : "Maaf ya, belum beruntung.";
@@ -237,19 +245,17 @@
         }
 
         function calculateResult() {
-            // Peluang menang 8% untuk target 650 siswa
-            const winChance = Math.random() < 0.17 && (storage.kipas + storage.stiker + storage.bolpoint) > 0;
+            const totalStock = Object.values(storage).reduce((a, b) => a + b, 0);
+            const winChance = Math.random() < 0.08 && totalStock > 0;
+            
             if (winChance) {
                 let pool = [];
-                if (storage.kipas > 0) pool.push('KIPAS TANGAN');
-                if (storage.stiker > 0) pool.push('STIKER EXCLUSIVE');
-                if (storage.bolpoint > 0) pool.push('BOLPOINT UMC');
+                for (const [name, count] of Object.entries(storage)) {
+                    if (count > 0) pool.push(name);
+                }
                 if (pool.length > 0) {
                     const picked = pool[Math.floor(Math.random() * pool.length)];
-                    if (picked === 'KIPAS TANGAN') storage.kipas--;
-                    else if (picked === 'BOLPOINT UMC') storage.bolpoint--;
-                    else storage.stiker--;
-                    storage.totalWin++;
+                    storage[picked]--;
                     localStorage.setItem(STOCK_KEY, JSON.stringify(storage));
                     return { win: true, name: picked };
                 }
@@ -294,28 +300,23 @@
             setTimeout(() => { location.reload(); }, 6000);
         }
 
-        // DATABASE ADMIN (Klik Logo 3x)
+        // ADMIN EDIT DATABASE (Klik Logo 3x)
         adminLogo.addEventListener('click', () => {
             clickCount++;
             if (clickCount === 3) {
-                // Prompt untuk edit stok langsung
-                let input = prompt(
-                    `DATABASE ADMIN - SISA STOK\nFormat: KIPAS,STIKER,BOLPOINT\n\nIsi angka baru untuk merubah:`,
-                    `${storage.kipas},${storage.stiker},${storage.bolpoint}`
-                );
-
+                let currentStr = Object.entries(storage).map(([n, c]) => `${n}:${c}`).join(', ');
+                let input = prompt(`DATABASE ADMIN\nFormat: NAMA:JUMLAH\nContoh: BUKU:10, TAS:5`, currentStr);
                 if (input) {
-                    let newVals = input.split(',');
-                    if(newVals.length === 3) {
-                        storage.kipas = parseInt(newVals[0]) || 0;
-                        storage.stiker = parseInt(newVals[1]) || 0;
-                        storage.bolpoint = parseInt(newVals[2]) || 0;
+                    try {
+                        let newStorage = {};
+                        input.split(',').forEach(item => {
+                            let [name, count] = item.split(':');
+                            newStorage[name.trim().toUpperCase()] = parseInt(count.trim());
+                        });
+                        storage = newStorage;
                         localStorage.setItem(STOCK_KEY, JSON.stringify(storage));
-                        alert("Database Stok Berhasil Diupdate!");
                         location.reload();
-                    } else {
-                        alert("Format salah! Gunakan koma (misal: 5,25,5)");
-                    }
+                    } catch (e) { alert("Format Salah!"); }
                 }
                 clickCount = 0;
             }
