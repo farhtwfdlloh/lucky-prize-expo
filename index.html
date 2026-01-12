@@ -12,22 +12,24 @@
             --white: #ffffff;
         }
 
+        * { box-sizing: border-box; } /* Biar padding gak ngerusak ukuran */
+
         body {
             margin: 0; padding: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
-            /* BACKGROUND: Foto kampus Ma Chung */
-            background-image: url('image-7 (1).png');
+            background-image: url('image-7 (1).jpg');
             background-size: cover;
-            background-position: center;
-            height: 100vh; 
-            overflow: hidden; 
+            background-position: center center;
+            background-attachment: fixed; /* Biar background gak ikut scroll */
+            background-repeat: no-repeat;
+            min-height: 100vh; 
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
             color: white;
             position: relative;
         }
 
-        /* OVERLAY BIRU SAMAR */
+        /* OVERLAY BIAR BACKGROUND TETEP SAMAR */
         body::before {
             content: '';
             position: absolute;
@@ -41,34 +43,39 @@
             text-align: center; 
             z-index: 10; 
             width: 100%;
+            max-width: 600px; /* Batas maksimal biar gak kelebaran di laptop */
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 8px; 
+            gap: 10px; 
         }
 
         .logo-top {
-            width: 130px; 
+            width: 100px; 
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             margin: 0 auto;
         }
 
         .main-title { 
             margin: 0 0 10px 0; 
-            font-size: 2.3rem; 
+            font-size: 1.8rem; /* Ukuran default lebih kecil (mobile-first) */
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
-            text-shadow: 3px 3px 0px var(--mc-green);
-            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 0px var(--mc-green);
+            letter-spacing: 1px;
         }
 
+        /* CARD JADI RESPONSIF */
         #card-wrapper {
             position: relative;
-            width: 550px; height: 320px;
+            width: 100%; /* Ikuti lebar layar HP */
+            max-width: 550px; /* Tapi jangan lebih dari 550px di laptop */
+            aspect-ratio: 550 / 320; /* Jaga proporsi kotak */
             background: var(--mc-blue); 
-            border-radius: 20px;
-            border: 8px solid var(--mc-green);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            border-radius: 15px;
+            border: 6px solid var(--mc-green);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             overflow: hidden;
             margin: 0 auto;
         }
@@ -79,37 +86,39 @@
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
             background: var(--mc-blue);
-            color: var(--white);
             text-align: center;
+            padding: 10px;
         }
 
-        /* FRAME HIJAU UNTUK NAMA HADIAH */
         #prize-name { 
-            font-size: 2.5rem; 
+            font-size: 1.5rem; /* Ukuran nama hadiah di HP */
             font-weight: 900; 
             margin: 0; 
             color: var(--white); 
             text-transform: uppercase;
-            background: var(--mc-green); /* Mengambil warna frame kode */
-            padding: 15px 35px;
-            border: 4px solid var(--white); /* Border putih agar tegas */
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            background: var(--mc-green); 
+            padding: 10px 20px;
+            border: 3px solid var(--white); 
+            border-radius: 10px;
             display: inline-block;
         }
 
         #prize-sub { 
-            font-size: 1.3rem; 
+            font-size: 1rem; 
             color: #e0e0e0; 
-            margin-top: 20px; 
-            font-weight: 500; 
+            margin-top: 15px; 
         }
 
-        #scratch-canvas { position: absolute; top: 0; left: 0; z-index: 5; }
+        #scratch-canvas { 
+            position: absolute; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; /* Canvas ikut ukuran wrapper */
+            z-index: 5; 
+        }
 
         #visual-hand {
             position: absolute;
-            width: 270px; 
+            width: 200px; /* Tangan dikecilkan buat HP */
             z-index: 99;
             pointer-events: none;
             top: 110%; 
@@ -120,21 +129,27 @@
 
         .btn-action {
             margin: 10px auto 0;
-            padding: 15px 50px;
-            font-size: 1.6rem;
+            padding: 12px 40px;
+            font-size: 1.2rem;
             font-weight: bold;
             background: var(--mc-green);
             color: white;
             border: none;
             border-radius: 50px;
-            box-shadow: 0 6px 0 #1a6d2d;
+            box-shadow: 0 5px 0 #1a6d2d;
             cursor: pointer;
             transition: 0.2s;
-            width: fit-content;
         }
 
-        .btn-action:active { transform: translateY(3px); box-shadow: 0 3px 0 #1a6d2d; }
-        .btn-action:disabled { background: #555; box-shadow: 0 6px 0 #333; cursor: not-allowed; }
+        /* --- PENYESUAIAN KHUSUS LAPTOP (LAYAR GEDE) --- */
+        @media (min-width: 768px) {
+            .logo-top { width: 130px; }
+            .main-title { font-size: 2.5rem; }
+            #prize-name { font-size: 2.5rem; padding: 15px 35px; }
+            #prize-sub { font-size: 1.3rem; }
+            .btn-action { font-size: 1.6rem; padding: 15px 50px; }
+            #visual-hand { width: 270px; }
+        }
 
         .zoom-in-out { animation: zoom 0.5s infinite alternate; }
         @keyframes zoom { from { transform: scale(1); } to { transform: scale(1.05); } }
@@ -151,9 +166,7 @@
                 <p id="prize-name"></p>
                 <p id="prize-sub"></p>
             </div>
-
-            <canvas id="scratch-canvas" width="550" height="320"></canvas>
-            
+            <canvas id="scratch-canvas"></canvas>
             <img id="visual-hand" src="Sales_Product_Website-removebg-preview.png" alt="Hand Anim">
         </div>
 
@@ -173,39 +186,44 @@
         const btn = document.getElementById('btn-play');
         const sndScratch = document.getElementById('snd-scratch');
 
-        const STOCK_KEY = 'umc_expo_final_framed';
+        const STOCK_KEY = 'umc_expo_final_framed_v3';
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             kipas: 5, stiker: 25, bolpoint: 5, totalWin: 0
         };
 
+        // Fungsi untuk mengatur resolusi canvas agar pas dengan ukuran wrapper
+        function resizeCanvas() {
+            const wrapper = document.getElementById('card-wrapper');
+            canvas.width = wrapper.offsetWidth;
+            canvas.height = wrapper.offsetHeight;
+            init(); // Re-draw lapisan abu-abu
+        }
+
         function init() {
             ctx.globalCompositeOperation = 'source-over';
             ctx.fillStyle = '#bdc3c7'; 
-            ctx.fillRect(0, 0, 550, 320);
-            
-            for(let i=0; i<500; i++) {
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            for(let i=0; i<400; i++) {
                 ctx.fillStyle = Math.random() > 0.5 ? '#abb2b9' : '#d5d8dc';
                 ctx.beginPath();
-                ctx.arc(Math.random()*550, Math.random()*320, 1.2, 0, Math.PI*2);
+                ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 1, 0, Math.PI*2);
                 ctx.fill();
             }
-
-            ctx.font = "bold 30px Arial";
+            ctx.font = `bold ${canvas.width/18}px Arial`;
             ctx.fillStyle = "#7f8c8d";
             ctx.textAlign = "center";
-            ctx.fillText("GOSOK DI SINI", 275, 170);
+            ctx.fillText("GOSOK DI SINI", canvas.width/2, canvas.height/1.8);
         }
 
-        init();
+        window.addEventListener('load', resizeCanvas);
+        window.addEventListener('resize', resizeCanvas);
 
         function executeScratch() {
             btn.disabled = true;
             const result = calculateResult();
             document.getElementById('prize-name').innerText = result.name;
-            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise ke panitia stand." : "Maaf ya, belum beruntung.";
-
-            hand.style.top = "180px"; 
-            
+            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil di stand kami." : "Maaf ya, belum beruntung.";
+            hand.style.top = "50%"; 
             setTimeout(() => {
                 sndScratch.play();
                 startAutoScratch(result.win);
@@ -214,54 +232,40 @@
 
         function calculateResult() {
             const winChance = Math.random() < 0.08 && storage.totalWin < 35;
-            
             if (winChance) {
                 let pool = [];
                 if (storage.kipas > 0) pool.push('KIPAS TANGAN');
                 if (storage.stiker > 0) pool.push('STIKER EXCLUSIVE');
                 if (storage.bolpoint > 0) pool.push('BOLPOINT UMC');
-
                 if (pool.length > 0) {
                     const picked = pool[Math.floor(Math.random() * pool.length)];
                     if (picked === 'KIPAS TANGAN') storage.kipas--;
                     else if (picked === 'BOLPOINT UMC') storage.bolpoint--;
                     else storage.stiker--;
-
                     storage.totalWin++;
                     localStorage.setItem(STOCK_KEY, JSON.stringify(storage));
                     return { win: true, name: picked };
                 }
             }
-            return { win: false, name: 'ZONK 🤪' };
+            return { win: false, name: 'ZONK 😢' };
         }
 
         function startAutoScratch(isWin) {
             ctx.globalCompositeOperation = 'destination-out';
             hand.style.transition = 'none';
             hand.style.transform = 'none';
-
             let start = null;
             const duration = 2800; 
-
             function animate(now) {
                 if (!start) start = now;
                 const progress = now - start;
-                
-                const x = (progress / duration) * 600;
-                const y = 160 + Math.sin(progress * 0.015) * 100;
-
-                ctx.beginPath();
-                ctx.arc(x, y, 55, 0, Math.PI * 2);
-                ctx.fill();
-
-                hand.style.left = (x - 70) + 'px';
-                hand.style.top = (y - 230) + 'px';
-
-                if (progress < duration) {
-                    requestAnimationFrame(animate);
-                } else {
-                    onFinish(isWin);
-                }
+                const x = (progress / duration) * (canvas.width + 100);
+                const y = (canvas.height/2) + Math.sin(progress * 0.015) * (canvas.height/3);
+                ctx.beginPath(); ctx.arc(x, y, canvas.width/10, 0, Math.PI * 2); ctx.fill();
+                hand.style.left = (x - (hand.offsetWidth/4)) + 'px';
+                hand.style.top = (y - (hand.offsetHeight/1.5)) + 'px';
+                if (progress < duration) requestAnimationFrame(animate);
+                else onFinish(isWin);
             }
             requestAnimationFrame(animate);
         }
@@ -269,12 +273,10 @@
         function onFinish(isWin) {
             sndScratch.pause();
             sndScratch.currentTime = 0;
-            
             hand.style.transition = 'opacity 0.4s ease-out';
             hand.style.opacity = '0';
             canvas.style.transition = 'opacity 0.8s ease-out';
             canvas.style.opacity = '0';
-
             if (isWin) {
                 document.getElementById('snd-win').play();
                 document.getElementById('prize-name').classList.add('zoom-in-out');
@@ -282,9 +284,7 @@
             } else {
                 document.getElementById('snd-lose').play();
             }
-
-            // Reload otomatis setelah 7 detik
-            setTimeout(() => { location.reload(); }, 7000);
+            setTimeout(() => { location.reload(); }, 6000);
         }
 
         window.addEventListener('keydown', (e) => {
