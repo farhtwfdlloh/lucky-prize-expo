@@ -246,7 +246,7 @@
 
         function calculateResult() {
             const totalStock = Object.values(storage).reduce((a, b) => a + b, 0);
-            const winChance = Math.random() < 0.08 && totalStock > 0;
+            const winChance = Math.random() < 0.17 && totalStock > 0;
             
             if (winChance) {
                 let pool = [];
