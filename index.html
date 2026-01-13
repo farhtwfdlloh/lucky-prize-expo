@@ -21,7 +21,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center; /* KONTEN GAME PAS TENGAH */
+            align-items: center; /* KONTEN TETEP TENGAH */
             color: white;
             position: relative;
             overflow: hidden;
@@ -45,43 +45,39 @@
             z-index: -1;
         }
 
-        /* LOGO DIPISAH (GAK DADI SIJI KARO CONTAINER) */
-        .logo-top {
-            position: absolute;
-            top: 40px; /* Jarak pas biar gak langit ke-7 tapi gak mepet judul */
-            width: 100px; 
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-            cursor: pointer;
-            z-index: 100;
-        }
-
         .container { 
             text-align: center; 
             z-index: 10; 
-            width: 100%;
+            width: 95%;
             max-width: 600px;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px; /* Kasih jarak antar elemen biar lega */
+            gap: 10px; /* JARAK RAPAT BIAR GAK MLOROT */
+        }
+
+        .logo-top {
+            width: 80px; /* UKURAN PAS BIAR GAK NIBANI */
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            cursor: pointer;
         }
 
         .main-title { 
             margin: 0; 
-            font-size: 1.15rem; /* Ukuran pas biar 1 baris di HP */
+            font-size: 1.1rem; /* UKURAN KHUSUS BIAR 1 BARIS DI HP */
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
             text-shadow: 2px 2px 0px var(--mc-green);
-            white-space: nowrap; /* PAKSA SATU BARIS */
+            white-space: nowrap; /* PAKSA ONE LINE */
             letter-spacing: 0.5px;
         }
 
         #card-wrapper {
             position: relative;
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             aspect-ratio: 550 / 320;
             background: var(--mc-blue); 
             border-radius: 15px;
@@ -96,22 +92,16 @@
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
             background: var(--mc-blue);
-            padding: 10px;
         }
 
         #prize-name { 
-            font-size: 1.35rem; 
+            font-size: 1.3rem; 
             font-weight: 900; 
-            margin: 0; 
-            color: var(--white); 
-            text-transform: uppercase;
             background: var(--mc-green); 
-            padding: 10px 20px;
+            padding: 8px 15px;
             border: 3px solid var(--white); 
             border-radius: 10px;
         }
-
-        #prize-sub { font-size: 0.85rem; color: #e0e0e0; margin-top: 10px; }
 
         #scratch-canvas { 
             position: absolute; 
@@ -122,7 +112,7 @@
 
         #visual-hand {
             position: absolute;
-            width: 150px; 
+            width: 140px; 
             z-index: 99;
             pointer-events: none;
             top: 110%; left: 50%;
@@ -131,9 +121,8 @@
         }
 
         .btn-action {
-            margin-top: 5px;
-            padding: 12px 40px;
-            font-size: 1.15rem;
+            padding: 12px 35px;
+            font-size: 1.1rem;
             font-weight: bold;
             background: var(--mc-green);
             color: white;
@@ -141,21 +130,14 @@
             border-radius: 50px;
             box-shadow: 0 5px 0 #1a6d2d;
             cursor: pointer;
-            transition: 0.2s;
         }
 
-        .btn-action:disabled {
-            background: #333333 !important;
-            opacity: 0.7;
-        }
-
-        /* RESPONSIVE LAPTOP */
         @media (min-width: 768px) {
-            .logo-top { width: 125px; top: 30px; }
-            .main-title { font-size: 2.3rem; }
-            #prize-name { font-size: 2.5rem; padding: 15px 35px; }
-            .btn-action { font-size: 1.6rem; padding: 15px 50px; }
-            #visual-hand { width: 240px; }
+            .logo-top { width: 110px; }
+            .main-title { font-size: 2.2rem; }
+            #prize-name { font-size: 2.3rem; }
+            .btn-action { font-size: 1.5rem; }
+            #visual-hand { width: 230px; }
         }
     </style>
 </head>
@@ -164,9 +146,8 @@
     <div class="bg-overlay"></div>
     <div class="blue-tint"></div>
 
-    <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
-
     <div class="container">
+        <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
         <h1 class="main-title">LUCKY PRIZE MERCHANDISE</h1>
 
         <div id="card-wrapper">
@@ -195,7 +176,7 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        const STOCK_KEY = 'umc_expo_v_final_oneline_sync'; 
+        const STOCK_KEY = 'umc_expo_v_final_sync_emoji'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
@@ -235,7 +216,7 @@
             btn.disabled = true;
             const result = calculateResult();
             document.getElementById('prize-name').innerText = result.name;
-            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise ke panitia stand." : "Maaf ya, belum beruntung.";
+            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise." : "Maaf ya, belum beruntung.";
             hand.style.top = "50%"; 
             setTimeout(() => {
                 sndScratch.play();
@@ -246,7 +227,6 @@
         function calculateResult() {
             const totalStock = Object.values(storage).reduce((a, b) => a + b, 0);
             const winChance = Math.random() < 0.17 && totalStock > 0;
-            
             if (winChance) {
                 let pool = [];
                 for (const [name, count] of Object.entries(storage)) {
@@ -285,13 +265,10 @@
         function onFinish(isWin) {
             sndScratch.pause();
             sndScratch.currentTime = 0;
-            hand.style.transition = 'opacity 0.4s ease-out';
             hand.style.opacity = '0';
-            canvas.style.transition = 'opacity 0.8s ease-out';
             canvas.style.opacity = '0';
             if (isWin) {
                 document.getElementById('snd-win').play();
-                document.getElementById('prize-name').classList.add('zoom-in-out');
                 confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
             } else {
                 document.getElementById('snd-lose').play();
