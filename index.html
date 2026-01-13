@@ -22,10 +22,10 @@
             display: flex; 
             flex-direction: column;
             align-items: center; 
-            justify-content: center; /* INI BIAR SEMUA JADI SATU DI TENGAH */
+            justify-content: center; /* KONTEN UTAMA TETAP DI TENGAH */
             color: white;
             position: relative;
-            overflow: hidden; /* Mencegah scroll yang gak perlu di HP */
+            overflow: hidden;
         }
 
         .bg-overlay {
@@ -46,6 +46,16 @@
             z-index: -1;
         }
 
+        /* LOGO DIPAKSA KE ATAS */
+        .logo-top {
+            position: absolute;
+            top: 20px; /* Jarak dari atas layar */
+            width: 80px; 
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            cursor: pointer;
+            z-index: 20;
+        }
+
         .container { 
             text-align: center; 
             z-index: 10; 
@@ -54,15 +64,8 @@
             padding: 20px;
             display: flex; 
             flex-direction: column; 
-            align-items: center; /* Pastikan logo dkk rata tengah */
-            gap: 10px; /* Jarak antar elemen */
-        }
-
-        .logo-top {
-            width: 80px; /* Ukuran pas buat HP biar gak nutupin layar */
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-            cursor: pointer;
-            margin-bottom: 5px;
+            align-items: center;
+            gap: 10px;
         }
 
         .main-title { 
@@ -72,7 +75,7 @@
             text-transform: uppercase; 
             color: var(--white);
             text-shadow: 2px 2px 0px var(--mc-green);
-            white-space: nowrap; 
+            white-space: nowrap; /* PAKSA SATU BARIS */
             letter-spacing: 0.5px;
         }
 
@@ -151,7 +154,7 @@
 
         /* PENYESUAIAN LAPTOP */
         @media (min-width: 768px) {
-            .logo-top { width: 110px; }
+            .logo-top { width: 110px; top: 30px; }
             .main-title { font-size: 2.2rem; }
             #prize-name { font-size: 2.3rem; padding: 15px 30px; }
             .btn-action { font-size: 1.5rem; padding: 15px 45px; }
@@ -164,8 +167,9 @@
     <div class="bg-overlay"></div>
     <div class="blue-tint"></div>
 
+    <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
+
     <div class="container">
-        <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
         <h1 class="main-title">LUCKY PRIZE MERCHANDISE</h1>
 
         <div id="card-wrapper">
@@ -194,8 +198,8 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        // KEY BARU BIAR REFRESH STOK
-        const STOCK_KEY = 'umc_expo_v_final_centered'; 
+        // KEY SINKRON TERBARU
+        const STOCK_KEY = 'umc_expo_v_final_toplogo'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
