@@ -21,7 +21,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center; /* KONTEN PAS TENGAH LAYAR */
+            align-items: center; /* KONTEN GAME PAS TENGAH */
             color: white;
             position: relative;
             overflow: hidden;
@@ -45,31 +45,36 @@
             z-index: -1;
         }
 
+        /* LOGO DIPISAH (GAK DADI SIJI KARO CONTAINER) */
+        .logo-top {
+            position: absolute;
+            top: 40px; /* Jarak pas biar gak langit ke-7 tapi gak mepet judul */
+            width: 100px; 
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            cursor: pointer;
+            z-index: 100;
+        }
+
         .container { 
             text-align: center; 
             z-index: 10; 
-            width: 95%;
+            width: 100%;
             max-width: 600px;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px; /* JARAK AMAN ANTAR ELEMEN */
-        }
-
-        .logo-top {
-            width: 95px; /* Ukuran proporsional HP */
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-            cursor: pointer;
+            gap: 20px; /* Kasih jarak antar elemen biar lega */
         }
 
         .main-title { 
             margin: 0; 
-            font-size: 1.4rem; 
+            font-size: 1.15rem; /* Ukuran pas biar 1 baris di HP */
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
             text-shadow: 2px 2px 0px var(--mc-green);
+            white-space: nowrap; /* PAKSA SATU BARIS */
             letter-spacing: 0.5px;
         }
 
@@ -95,7 +100,7 @@
         }
 
         #prize-name { 
-            font-size: 1.4rem; 
+            font-size: 1.35rem; 
             font-weight: 900; 
             margin: 0; 
             color: var(--white); 
@@ -106,7 +111,7 @@
             border-radius: 10px;
         }
 
-        #prize-sub { font-size: 0.9rem; color: #e0e0e0; margin-top: 10px; }
+        #prize-sub { font-size: 0.85rem; color: #e0e0e0; margin-top: 10px; }
 
         #scratch-canvas { 
             position: absolute; 
@@ -128,7 +133,7 @@
         .btn-action {
             margin-top: 5px;
             padding: 12px 40px;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: bold;
             background: var(--mc-green);
             color: white;
@@ -144,12 +149,13 @@
             opacity: 0.7;
         }
 
+        /* RESPONSIVE LAPTOP */
         @media (min-width: 768px) {
-            .logo-top { width: 130px; }
-            .main-title { font-size: 2.3rem; margin-bottom: 5px; }
-            #prize-name { font-size: 2.6rem; padding: 15px 35px; }
-            .btn-action { font-size: 1.7rem; padding: 15px 50px; }
-            #visual-hand { width: 250px; }
+            .logo-top { width: 125px; top: 30px; }
+            .main-title { font-size: 2.3rem; }
+            #prize-name { font-size: 2.5rem; padding: 15px 35px; }
+            .btn-action { font-size: 1.6rem; padding: 15px 50px; }
+            #visual-hand { width: 240px; }
         }
     </style>
 </head>
@@ -158,8 +164,9 @@
     <div class="bg-overlay"></div>
     <div class="blue-tint"></div>
 
+    <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
+
     <div class="container">
-        <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
         <h1 class="main-title">LUCKY PRIZE MERCHANDISE</h1>
 
         <div id="card-wrapper">
@@ -188,7 +195,7 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        const STOCK_KEY = 'umc_expo_v_final_sync_gokil'; 
+        const STOCK_KEY = 'umc_expo_v_final_oneline_sync'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
@@ -252,7 +259,7 @@
                     return { win: true, name: picked };
                 }
             }
-            return { win: false, name: 'ZONK 🤪' }; /* WIS TAK GANTI 🤪 SESUAI KAREPMU */
+            return { win: false, name: 'ZONK 🤪' };
         }
 
         function startAutoScratch(isWin) {
