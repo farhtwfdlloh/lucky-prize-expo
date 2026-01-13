@@ -22,7 +22,7 @@
             display: flex; 
             flex-direction: column;
             align-items: center; 
-            justify-content: center; /* KONTEN UTAMA TETAP DI TENGAH */
+            justify-content: center; /* KONTEN UTAMA PAS TENGAH */
             color: white;
             position: relative;
             overflow: hidden;
@@ -46,14 +46,14 @@
             z-index: -1;
         }
 
-        /* LOGO DIPAKSA KE ATAS */
+        /* LOGO GEDE & TETEP NANG NDHUWUR LAYAR */
         .logo-top {
-            position: absolute;
-            top: 20px; /* Jarak dari atas layar */
-            width: 80px; 
+            position: fixed;
+            top: 30px; 
+            width: 120px; /* TAK GEDEIN MANEH */
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             cursor: pointer;
-            z-index: 20;
+            z-index: 100;
         }
 
         .container { 
@@ -65,17 +65,18 @@
             display: flex; 
             flex-direction: column; 
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            margin-top: 60px; /* Kasih jarak dari logo fixed di atas */
         }
 
         .main-title { 
             margin: 0 0 10px 0; 
-            font-size: 1.25rem; 
+            font-size: 1.4rem; 
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
             text-shadow: 2px 2px 0px var(--mc-green);
-            white-space: nowrap; /* PAKSA SATU BARIS */
+            white-space: nowrap; 
             letter-spacing: 0.5px;
         }
 
@@ -101,18 +102,18 @@
         }
 
         #prize-name { 
-            font-size: 1.35rem; 
+            font-size: 1.5rem; 
             font-weight: 900; 
             margin: 0; 
             color: var(--white); 
             text-transform: uppercase;
             background: var(--mc-green); 
-            padding: 10px 15px;
+            padding: 10px 20px;
             border: 3px solid var(--white); 
             border-radius: 10px;
         }
 
-        #prize-sub { font-size: 0.85rem; color: #e0e0e0; margin-top: 10px; }
+        #prize-sub { font-size: 0.9rem; color: #e0e0e0; margin-top: 15px; }
 
         #scratch-canvas { 
             position: absolute; 
@@ -123,7 +124,7 @@
 
         #visual-hand {
             position: absolute;
-            width: 150px; 
+            width: 160px; 
             z-index: 99;
             pointer-events: none;
             top: 110%; left: 50%;
@@ -132,34 +133,37 @@
         }
 
         .btn-action {
-            margin-top: 5px;
-            padding: 12px 35px;
-            font-size: 1.1rem;
+            margin-top: 10px;
+            padding: 15px 45px;
+            font-size: 1.2rem;
             font-weight: bold;
             background: var(--mc-green);
             color: white;
             border: none;
             border-radius: 50px;
-            box-shadow: 0 5px 0 #1a6d2d;
+            box-shadow: 0 6px 0 #1a6d2d;
             cursor: pointer;
             transition: 0.2s;
         }
 
         .btn-action:disabled {
-            background: #333333 !important;
+            background: #333333 !important; /* MATI JADI IRENG/ABU GELAP */
             box-shadow: none;
             cursor: not-allowed;
-            opacity: 0.7;
+            opacity: 0.8;
+            transform: scale(0.98);
         }
 
-        /* PENYESUAIAN LAPTOP */
         @media (min-width: 768px) {
-            .logo-top { width: 110px; top: 30px; }
-            .main-title { font-size: 2.2rem; }
-            #prize-name { font-size: 2.3rem; padding: 15px 30px; }
-            .btn-action { font-size: 1.5rem; padding: 15px 45px; }
-            #visual-hand { width: 230px; }
+            .logo-top { width: 140px; top: 40px; }
+            .main-title { font-size: 2.5rem; }
+            #prize-name { font-size: 2.8rem; padding: 15px 40px; }
+            .btn-action { font-size: 1.8rem; padding: 18px 60px; }
+            #visual-hand { width: 260px; }
         }
+
+        .zoom-in-out { animation: zoom 0.5s infinite alternate; }
+        @keyframes zoom { from { transform: scale(1); } to { transform: scale(1.05); } }
     </style>
 </head>
 <body>
@@ -198,8 +202,8 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        // KEY SINKRON TERBARU
-        const STOCK_KEY = 'umc_expo_v_final_toplogo'; 
+        /* GANTI KEY BIAR NAMA HADIAH JADI UMC SEMUA */
+        const STOCK_KEY = 'umc_expo_v_final_final_fixed'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
@@ -249,6 +253,7 @@
 
         function calculateResult() {
             const totalStock = Object.values(storage).reduce((a, b) => a + b, 0);
+            /* Peluang 17% cek */
             const winChance = Math.random() < 0.17 && totalStock > 0;
             
             if (winChance) {
@@ -307,7 +312,7 @@
             clickCount++;
             if (clickCount === 3) {
                 let currentStr = Object.entries(storage).map(([n, c]) => `${n}:${c}`).join(', ');
-                let input = prompt(`DATABASE ADMIN\nFormat: NAMA:JUMLAH\nContoh: KIPAS:10, TAS:5`, currentStr);
+                let input = prompt(`DATABASE ADMIN\nFormat: NAMA:JUMLAH`, currentStr);
                 if (input) {
                     try {
                         let newStorage = {};
