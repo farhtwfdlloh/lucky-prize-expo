@@ -19,19 +19,20 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background-color: var(--mc-dark);
             min-height: 100vh; 
-            display: flex; 
-            flex-direction: column;
+            display: flex; flex-direction: column;
             align-items: center; 
-            justify-content: center; /* KONTEN UTAMA PAS TENGAH */
+            justify-content: center; /* KONTEN TENGAH */
             color: white;
             position: relative;
             overflow: hidden;
         }
 
+        /* FIX BACKGROUND AGAR TIDAK PUTIH/404 */
         .bg-overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
+            /* CEK: Pastikan di GitHub namane 'image-7 (1).png' */
             background-image: url('image-7 (1).png'); 
             background-size: cover;
             background-position: center;
@@ -46,11 +47,11 @@
             z-index: -1;
         }
 
-        /* LOGO GEDE & TETEP NANG NDHUWUR LAYAR */
+        /* LOGO TAK PAKSA NENG NDHUWUR DEWE */
         .logo-top {
-            position: fixed;
-            top: 30px; 
-            width: 120px; /* TAK GEDEIN MANEH */
+            position: absolute;
+            top: 15px; /* Jarak mentok atas */
+            width: 90px; 
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             cursor: pointer;
             z-index: 100;
@@ -62,21 +63,18 @@
             width: 100%;
             max-width: 600px;
             padding: 20px;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            gap: 15px;
-            margin-top: 60px; /* Kasih jarak dari logo fixed di atas */
+            display: flex; flex-direction: column; gap: 10px;
+            margin-top: 50px; /* Jarak biar gak tabrakan sama logo */
         }
 
         .main-title { 
             margin: 0 0 10px 0; 
-            font-size: 1.4rem; 
+            font-size: 1.3rem; 
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
             text-shadow: 2px 2px 0px var(--mc-green);
-            white-space: nowrap; 
+            white-space: nowrap; /* PAKSA 1 BARIS */
             letter-spacing: 0.5px;
         }
 
@@ -102,7 +100,7 @@
         }
 
         #prize-name { 
-            font-size: 1.5rem; 
+            font-size: 1.4rem; 
             font-weight: 900; 
             margin: 0; 
             color: var(--white); 
@@ -113,7 +111,7 @@
             border-radius: 10px;
         }
 
-        #prize-sub { font-size: 0.9rem; color: #e0e0e0; margin-top: 15px; }
+        #prize-sub { font-size: 0.9rem; color: #e0e0e0; margin-top: 10px; }
 
         #scratch-canvas { 
             position: absolute; 
@@ -134,36 +132,33 @@
 
         .btn-action {
             margin-top: 10px;
-            padding: 15px 45px;
+            padding: 12px 40px;
             font-size: 1.2rem;
             font-weight: bold;
             background: var(--mc-green);
             color: white;
             border: none;
             border-radius: 50px;
-            box-shadow: 0 6px 0 #1a6d2d;
+            box-shadow: 0 5px 0 #1a6d2d;
             cursor: pointer;
             transition: 0.2s;
         }
 
         .btn-action:disabled {
-            background: #333333 !important; /* MATI JADI IRENG/ABU GELAP */
+            background: #333333 !important;
             box-shadow: none;
             cursor: not-allowed;
-            opacity: 0.8;
-            transform: scale(0.98);
+            opacity: 0.7;
         }
 
+        /* RESPONSIVE LAPTOP */
         @media (min-width: 768px) {
-            .logo-top { width: 140px; top: 40px; }
+            .logo-top { width: 120px; top: 25px; }
             .main-title { font-size: 2.5rem; }
             #prize-name { font-size: 2.8rem; padding: 15px 40px; }
-            .btn-action { font-size: 1.8rem; padding: 18px 60px; }
-            #visual-hand { width: 260px; }
+            .btn-action { font-size: 1.7rem; padding: 15px 55px; }
+            #visual-hand { width: 250px; }
         }
-
-        .zoom-in-out { animation: zoom 0.5s infinite alternate; }
-        @keyframes zoom { from { transform: scale(1); } to { transform: scale(1.05); } }
     </style>
 </head>
 <body>
@@ -202,8 +197,8 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        /* GANTI KEY BIAR NAMA HADIAH JADI UMC SEMUA */
-        const STOCK_KEY = 'umc_expo_v_final_final_fixed'; 
+        /* SYNC BARU: Pakai key 'v_fix_mobile' */
+        const STOCK_KEY = 'umc_expo_v_fix_mobile'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
@@ -253,7 +248,6 @@
 
         function calculateResult() {
             const totalStock = Object.values(storage).reduce((a, b) => a + b, 0);
-            /* Peluang 17% cek */
             const winChance = Math.random() < 0.17 && totalStock > 0;
             
             if (winChance) {
