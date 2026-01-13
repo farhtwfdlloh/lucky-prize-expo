@@ -19,12 +19,13 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background-color: var(--mc-dark);
             min-height: 100vh; 
-            display: flex; flex-direction: column;
+            display: flex; 
+            flex-direction: column;
             align-items: center; 
-            justify-content: center; /* KEMBALI KE TENGAH SECARA VERTIKAL */
+            justify-content: center; /* INI BIAR SEMUA JADI SATU DI TENGAH */
             color: white;
             position: relative;
-            overflow-x: hidden;
+            overflow: hidden; /* Mencegah scroll yang gak perlu di HP */
         }
 
         .bg-overlay {
@@ -50,20 +51,23 @@
             z-index: 10; 
             width: 100%;
             max-width: 600px;
-            padding: 20px; /* Padding seimbang */
-            display: flex; flex-direction: column; gap: 8px; 
+            padding: 20px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; /* Pastikan logo dkk rata tengah */
+            gap: 10px; /* Jarak antar elemen */
         }
 
         .logo-top {
-            width: 90px; 
+            width: 80px; /* Ukuran pas buat HP biar gak nutupin layar */
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-            margin: 0 auto;
             cursor: pointer;
+            margin-bottom: 5px;
         }
 
         .main-title { 
-            margin: 5px 0 15px 0; 
-            font-size: 1.3rem; 
+            margin: 0 0 10px 0; 
+            font-size: 1.25rem; 
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
@@ -82,7 +86,6 @@
             border: 6px solid var(--mc-green);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             overflow: hidden;
-            margin: 0 auto;
         }
 
         #prize-content {
@@ -91,24 +94,22 @@
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
             background: var(--mc-blue);
-            text-align: center;
             padding: 10px;
         }
 
         #prize-name { 
-            font-size: 1.4rem; 
+            font-size: 1.35rem; 
             font-weight: 900; 
             margin: 0; 
             color: var(--white); 
             text-transform: uppercase;
             background: var(--mc-green); 
-            padding: 10px 20px;
+            padding: 10px 15px;
             border: 3px solid var(--white); 
             border-radius: 10px;
-            display: inline-block;
         }
 
-        #prize-sub { font-size: 0.9rem; color: #e0e0e0; margin-top: 15px; }
+        #prize-sub { font-size: 0.85rem; color: #e0e0e0; margin-top: 10px; }
 
         #scratch-canvas { 
             position: absolute; 
@@ -119,7 +120,7 @@
 
         #visual-hand {
             position: absolute;
-            width: 160px; 
+            width: 150px; 
             z-index: 99;
             pointer-events: none;
             top: 110%; left: 50%;
@@ -128,9 +129,9 @@
         }
 
         .btn-action {
-            margin: 15px auto 0;
-            padding: 12px 40px;
-            font-size: 1.2rem;
+            margin-top: 5px;
+            padding: 12px 35px;
+            font-size: 1.1rem;
             font-weight: bold;
             background: var(--mc-green);
             color: white;
@@ -148,16 +149,14 @@
             opacity: 0.7;
         }
 
+        /* PENYESUAIAN LAPTOP */
         @media (min-width: 768px) {
-            .logo-top { width: 120px; }
-            .main-title { font-size: 2.3rem; margin-bottom: 20px; }
-            #prize-name { font-size: 2.5rem; padding: 15px 35px; }
-            .btn-action { font-size: 1.6rem; padding: 15px 50px; }
-            #visual-hand { width: 250px; }
+            .logo-top { width: 110px; }
+            .main-title { font-size: 2.2rem; }
+            #prize-name { font-size: 2.3rem; padding: 15px 30px; }
+            .btn-action { font-size: 1.5rem; padding: 15px 45px; }
+            #visual-hand { width: 230px; }
         }
-
-        .zoom-in-out { animation: zoom 0.5s infinite alternate; }
-        @keyframes zoom { from { transform: scale(1); } to { transform: scale(1.05); } }
     </style>
 </head>
 <body>
@@ -195,8 +194,8 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        // GANTI KEY AGAR SINKRON DENGAN NAMA HADIAH BARU
-        const STOCK_KEY = 'umc_expo_v_final_sync_ok'; 
+        // KEY BARU BIAR REFRESH STOK
+        const STOCK_KEY = 'umc_expo_v_final_centered'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
