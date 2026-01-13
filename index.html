@@ -42,11 +42,11 @@
             z-index: -1;
         }
 
-        /* --- HP: LOGO NANG LANGIT (PLUNGKERAN BIRU) --- */
+        /* --- LOGO NANG LANGIT (MENTOK NDHUWUR) --- */
         .logo-top {
             position: absolute;
-            top: 25px; 
-            width: 85px; 
+            top: 15px; /* MUNGGAH NANG PLUNGKERAN BIRU */
+            width: 80px; 
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             cursor: pointer;
             z-index: 100;
@@ -56,11 +56,11 @@
             text-align: center; 
             z-index: 10; 
             width: 100%;
-            max-width: 600px;
-            padding: 10px;
+            max-width: 700px;
+            padding: 20px;
             display: flex; flex-direction: column;
             align-items: center;
-            gap: 15px; /* Jarak rapi di HP */
+            gap: 20px; /* JARAK LUAS BEN GAK TENGGELAM */
         }
 
         .main-title { 
@@ -76,14 +76,15 @@
 
         #card-wrapper {
             position: relative;
-            width: 82%;
-            max-width: 420px; 
+            width: 85%;
+            max-width: 450px; 
             aspect-ratio: 550 / 320;
             background: var(--mc-blue); 
             border-radius: 15px;
-            border: 5px solid var(--mc-green);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Shadow kartu */
+            border: 6px solid var(--mc-green);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6); /* Shadow mantap */
             overflow: hidden;
+            z-index: 5;
         }
 
         #prize-content {
@@ -95,10 +96,10 @@
         }
 
         #prize-name { 
-            font-size: 1.25rem; 
+            font-size: 1.3rem; 
             font-weight: 900; 
             background: var(--mc-green); 
-            padding: 8px 18px;
+            padding: 10px 20px;
             border: 3px solid var(--white); 
             border-radius: 10px;
             text-transform: uppercase;
@@ -111,7 +112,7 @@
         }
 
         #visual-hand {
-            position: absolute; width: 140px; 
+            position: absolute; width: 150px; 
             z-index: 99; pointer-events: none;
             top: 110%; left: 50%;
             transform: translateX(-50%);
@@ -119,9 +120,9 @@
         }
 
         .btn-action {
-            margin-top: 5px;
-            padding: 12px 40px;
-            font-size: 1.15rem;
+            margin-top: 10px;
+            padding: 15px 45px;
+            font-size: 1.2rem;
             font-weight: bold;
             background: var(--mc-green);
             color: white;
@@ -129,35 +130,31 @@
             border-radius: 50px;
             box-shadow: 0 5px 0 #1a6d2d;
             cursor: pointer;
-            z-index: 20; /* Ben gak ketutup bayangan */
+            z-index: 20; /* BEN GAK KETUTUP SHADOW KARTU */
+            position: relative;
         }
 
+        /* --- TOMBOL MATI: IRENG PEKAT --- */
         .btn-action:disabled {
             background: #111111 !important; 
-            color: #444444 !important;
+            color: #555555 !important;
             box-shadow: none !important;
             cursor: not-allowed;
             transform: translateY(3px);
         }
 
-        /* --- KHUSUS LAPTOP: KARTU GEDE & GAP LUAS --- */
+        /* --- KHUSUS LAPTOP: KARTU GEDE MANEH --- */
         @media (min-width: 768px) {
-            .logo-top { 
-                position: static; 
-                width: 120px; 
-                margin-bottom: 5px; 
-            }
-            .container { 
-                gap: 25px; /* Jarak luas ben bayangan gak nimbun tombol */
-            }
+            .logo-top { width: 110px; top: 30px; }
+            .container { gap: 35px; } /* Jarak ombo ben gak tenggelam */
             #card-wrapper {
                 width: 100%;
-                max-width: 550px; /* Kartu dadi gede maneh */
+                max-width: 600px; /* KARTU DADI GEDE */
             }
-            .main-title { font-size: 2.3rem; margin-bottom: 10px; }
-            #prize-name { font-size: 2.5rem; }
-            .btn-action { font-size: 1.6rem; padding: 15px 50px; }
-            #visual-hand { width: 240px; }
+            .main-title { font-size: 2.5rem; margin-bottom: 5px; }
+            #prize-name { font-size: 2.8rem; }
+            .btn-action { font-size: 1.8rem; padding: 18px 60px; }
+            #visual-hand { width: 250px; }
         }
     </style>
 </head>
@@ -166,9 +163,9 @@
     <div class="bg-overlay"></div>
     <div class="blue-tint"></div>
 
+    <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
+
     <div class="container">
-        <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
-        
         <h1 class="main-title">LUCKY PRIZE MERCHANDISE</h1>
 
         <div id="card-wrapper">
@@ -197,7 +194,7 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        const STOCK_KEY = 'umc_expo_v_final_standard_fix_v5_ocd'; 
+        const STOCK_KEY = 'umc_expo_v_final_standard_fix_v6_ocd'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
@@ -234,7 +231,7 @@
         window.addEventListener('resize', resizeCanvas);
 
         function executeScratch() {
-            btn.disabled = true;
+            btn.disabled = true; // Tombol malih ireng pekat
             const result = calculateResult();
             document.getElementById('prize-name').innerText = result.name;
             document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise." : "Maaf ya, belum beruntung.";
