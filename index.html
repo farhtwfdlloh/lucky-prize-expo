@@ -18,11 +18,10 @@
             margin: 0; padding: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
             background-color: var(--mc-dark);
-            height: 100vh; /* PAKSA TINGGI LAYAR */
-            width: 100vw;
+            height: 100vh; width: 100vw;
             display: flex; justify-content: center; align-items: center; 
             color: white; position: relative;
-            overflow: hidden; /* MATIIN SCROLL TOTAL */
+            overflow: hidden; /* ANTI SCROLL */
         }
 
         .bg-overlay {
@@ -36,34 +35,31 @@
             background-color: rgba(0, 74, 153, 0.75); z-index: -1;
         }
 
-        /* --- HP: LOGO NANG LANGIT --- */
+        /* --- HP: LOGO NANG BUNDERAN IJO --- */
         .logo-top {
             position: absolute;
-            top: 2vh; /* MENTOK NDHUWUR HP */
-            width: 70px; 
+            top: 60px; /* PAS NANG BUNDERAN IJO HP */
+            width: 75px; 
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             cursor: pointer; z-index: 100;
         }
 
         .container { 
-            text-align: center; z-index: 10; width: 100%; max-width: 800px;
+            text-align: center; z-index: 10; width: 100%; max-width: 850px;
             padding: 10px; display: flex; flex-direction: column;
-            align-items: center; 
-            gap: 2vh; /* Jarak fleksibel ngikutin tinggi layar */
+            align-items: center; gap: 2vh; 
         }
 
         .main-title { 
-            margin: 0; font-size: 4.8vw; font-weight: 900;
+            margin: 0; font-size: 5vw; font-weight: 900;
             text-transform: uppercase; color: var(--white);
             text-shadow: 2px 2px 0px var(--mc-green);
             white-space: nowrap; letter-spacing: 0.5px;
         }
 
-        /* LOTRE Gede tapi Tetep nang njero layar */
         #card-wrapper {
             position: relative;
             width: 85%; max-width: 420px; 
-            height: auto;
             aspect-ratio: 550 / 320;
             background: var(--mc-blue); border-radius: 15px;
             border: 5px solid var(--mc-green);
@@ -79,51 +75,49 @@
         }
 
         #prize-name { 
-            font-size: 1.2rem; font-weight: 900; background: var(--mc-green); 
+            font-size: 1.25rem; font-weight: 900; background: var(--mc-green); 
             padding: 8px 18px; border: 3px solid var(--white); 
             border-radius: 10px; text-transform: uppercase;
         }
 
+        #prize-sub { font-size: 0.85rem; color: #e0e0e0; margin-top: 10px; }
+
         #scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; }
 
         #visual-hand {
-            position: absolute; width: 120px; z-index: 99; pointer-events: none;
+            position: absolute; width: 130px; z-index: 99; pointer-events: none;
             top: 110%; left: 50%; transform: translateX(-50%);
             transition: top 0.5s ease-out, opacity 0.5s ease-out;
         }
 
         .btn-action {
-            padding: 12px 35px; font-size: 1.1rem; font-weight: bold;
+            padding: 12px 40px; font-size: 1.15rem; font-weight: bold;
             background: var(--mc-green); color: white; border: none;
             border-radius: 50px; box-shadow: 0 5px 0 #1a6d2d;
             cursor: pointer; z-index: 50; position: relative;
-            transition: 0.1s;
         }
 
-        /* TOMBOL IRENG PEKAT PAS PROSES */
         .btn-action:disabled {
             background: #111111 !important; color: #555555 !important;
             box-shadow: none !important; cursor: not-allowed; transform: translateY(3px);
         }
 
-        /* --- LAPTOP: KARTU GEDE POL & NO SCROLL --- */
+        /* --- LAPTOP: TETEP JOSJIS GAK BERUBAH --- */
         @media (min-width: 768px) {
             .logo-top { 
-                position: static; /* Biar gak nibani judul */
-                width: 110px; margin-bottom: 0; 
+                position: static; 
+                width: 115px; margin-bottom: 5px; 
             }
             .container { gap: 3vh; } 
             #card-wrapper {
                 width: 100%;
-                max-width: 650px; /* Gede tapi gak nendang tombol keluar */
-                max-height: 45vh; /* Batasi tinggi biar gak muncul scroll */
+                max-width: 650px; 
+                max-height: 45vh; 
             }
-            .main-title { 
-                font-size: 2.2rem; /* Ukuran sewajare */
-            }
-            #prize-name { font-size: 2.8rem; }
-            .btn-action { font-size: 1.6rem; padding: 15px 55px; }
-            #visual-hand { width: 240px; }
+            .main-title { font-size: 2.3rem; margin-bottom: 10px; }
+            #prize-name { font-size: 3rem; }
+            .btn-action { font-size: 1.7rem; padding: 18px 60px; }
+            #visual-hand { width: 250px; }
         }
     </style>
 </head>
@@ -134,9 +128,7 @@
 
     <div class="container">
         <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
-        
         <h1 class="main-title">LUCKY PRIZE MERCHANDISE</h1>
-
         <div id="card-wrapper">
             <div id="prize-content">
                 <p id="prize-name"></p>
@@ -145,7 +137,6 @@
             <canvas id="scratch-canvas"></canvas>
             <img id="visual-hand" src="Sales_Product_Website-removebg-preview.png" alt="Hand Anim">
         </div>
-
         <button class="btn-action" id="btn-play" onclick="executeScratch()">GOSOK SEKARANG!</button>
     </div>
 
@@ -163,7 +154,7 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        const STOCK_KEY = 'umc_expo_v_final_onepage_ocd'; 
+        const STOCK_KEY = 'umc_expo_v_final_josjis_original'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, "STIKER UMC": 25, "BOLPOINT UMC": 5
@@ -194,7 +185,8 @@
             btn.disabled = true;
             const result = calculateResult();
             document.getElementById('prize-name').innerText = result.name;
-            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise." : "Maaf ya, belum beruntung.";
+            /* --- BALIK KE KATA-KATA JOSJIS --- */
+            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise ke panitia stand." : "Maaf ya, belum beruntung.";
             hand.style.top = "50%"; 
             setTimeout(() => { sndScratch.play(); startAutoScratch(result.win); }, 500);
         }
@@ -216,6 +208,7 @@
 
         function startAutoScratch(isWin) {
             ctx.globalCompositeOperation = 'destination-out';
+            /* BALIK KE AWAL (GAK PAKE ALPHA) */
             hand.style.transition = 'none'; hand.style.transform = 'none';
             let start = null; const duration = 2800; 
             function animate(now) {
@@ -223,7 +216,11 @@
                 const progress = now - start;
                 const x = (progress / duration) * (canvas.width + 100);
                 const y = (canvas.height/2) + Math.sin(progress * 0.015) * (canvas.height/3);
-                ctx.beginPath(); ctx.arc(x, y, canvas.width/8, 0, Math.PI * 2); ctx.fill();
+                
+                ctx.beginPath(); 
+                ctx.arc(x, y, canvas.width/8, 0, Math.PI * 2); 
+                ctx.fill();
+                
                 hand.style.left = (x - (hand.offsetWidth/4)) + 'px';
                 hand.style.top = (y - (hand.offsetHeight/1.5)) + 'px';
                 if (progress < duration) requestAnimationFrame(animate);
