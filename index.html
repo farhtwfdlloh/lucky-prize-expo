@@ -20,8 +20,9 @@
             background-color: var(--mc-dark);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center; /* KONTEN TETEP TENGAH */
+            flex-direction: column;
+            justify-content: center; /* KONTEN GAME PAS TENGAH VERTIKAL */
+            align-items: center;    /* KONTEN GAME PAS TENGAH HORIZONTAL */
             color: white;
             position: relative;
             overflow: hidden;
@@ -45,39 +46,43 @@
             z-index: -1;
         }
 
+        /* LOGO PAS NANG PLUNGKERAN IJO */
+        .logo-top {
+            position: absolute;
+            top: 8vh; /* Jarak pas nang plungkeran ijo */
+            width: 100px; 
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            cursor: pointer;
+            z-index: 100;
+        }
+
         .container { 
             text-align: center; 
             z-index: 10; 
-            width: 95%;
+            width: 100%;
             max-width: 600px;
-            padding: 10px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px; /* JARAK RAPAT BIAR GAK MLOROT */
-        }
-
-        .logo-top {
-            width: 80px; /* UKURAN PAS BIAR GAK NIBANI */
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-            cursor: pointer;
+            gap: 15px; /* Jarak antar elemen presisi */
         }
 
         .main-title { 
             margin: 0; 
-            font-size: 1.1rem; /* UKURAN KHUSUS BIAR 1 BARIS DI HP */
+            font-size: 5.2vw; /* ONE LINE PRESISI */
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
             text-shadow: 2px 2px 0px var(--mc-green);
-            white-space: nowrap; /* PAKSA ONE LINE */
+            white-space: nowrap; /* PAKSA SATU BARIS */
             letter-spacing: 0.5px;
         }
 
         #card-wrapper {
             position: relative;
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             aspect-ratio: 550 / 320;
             background: var(--mc-blue); 
             border-radius: 15px;
@@ -95,12 +100,13 @@
         }
 
         #prize-name { 
-            font-size: 1.3rem; 
+            font-size: 1.4rem; 
             font-weight: 900; 
             background: var(--mc-green); 
-            padding: 8px 15px;
+            padding: 10px 20px;
             border: 3px solid var(--white); 
             border-radius: 10px;
+            text-transform: uppercase;
         }
 
         #scratch-canvas { 
@@ -112,7 +118,7 @@
 
         #visual-hand {
             position: absolute;
-            width: 140px; 
+            width: 150px; 
             z-index: 99;
             pointer-events: none;
             top: 110%; left: 50%;
@@ -121,8 +127,8 @@
         }
 
         .btn-action {
-            padding: 12px 35px;
-            font-size: 1.1rem;
+            padding: 12px 40px;
+            font-size: 1.2rem;
             font-weight: bold;
             background: var(--mc-green);
             color: white;
@@ -132,12 +138,12 @@
             cursor: pointer;
         }
 
+        /* RESPONSIVE LAPTOP */
         @media (min-width: 768px) {
-            .logo-top { width: 110px; }
-            .main-title { font-size: 2.2rem; }
-            #prize-name { font-size: 2.3rem; }
-            .btn-action { font-size: 1.5rem; }
-            #visual-hand { width: 230px; }
+            .logo-top { width: 130px; top: 6vh; }
+            .main-title { font-size: 2.3rem; }
+            #prize-name { font-size: 2.6rem; }
+            .btn-action { font-size: 1.7rem; }
         }
     </style>
 </head>
@@ -146,8 +152,9 @@
     <div class="bg-overlay"></div>
     <div class="blue-tint"></div>
 
+    <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
+
     <div class="container">
-        <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
         <h1 class="main-title">LUCKY PRIZE MERCHANDISE</h1>
 
         <div id="card-wrapper">
@@ -176,7 +183,7 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        const STOCK_KEY = 'umc_expo_v_final_sync_emoji'; 
+        const STOCK_KEY = 'umc_expo_v_final_ocd_fix'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
