@@ -42,10 +42,10 @@
             z-index: -1;
         }
 
-        /* --- HP: LOGO NANG PLUNGKERAN IJO --- */
+        /* --- HP: LOGO NANG LANGIT (PLUNGKERAN BIRU) --- */
         .logo-top {
             position: absolute;
-            top: 6vh; 
+            top: 25px; 
             width: 85px; 
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             cursor: pointer;
@@ -60,12 +60,12 @@
             padding: 10px;
             display: flex; flex-direction: column;
             align-items: center;
-            gap: 12px; 
+            gap: 15px; /* Jarak rapi di HP */
         }
 
         .main-title { 
             margin: 0; 
-            font-size: 5vw; /* ONE LINE PASTI */
+            font-size: 5.1vw; 
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
@@ -74,16 +74,15 @@
             letter-spacing: 0.5px;
         }
 
-        /* LOTRE TAK CILIKNO BEN GAK MENONJOL */
         #card-wrapper {
             position: relative;
-            width: 85%;
+            width: 82%;
             max-width: 420px; 
             aspect-ratio: 550 / 320;
             background: var(--mc-blue); 
             border-radius: 15px;
             border: 5px solid var(--mc-green);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Shadow kartu */
             overflow: hidden;
         }
 
@@ -130,27 +129,32 @@
             border-radius: 50px;
             box-shadow: 0 5px 0 #1a6d2d;
             cursor: pointer;
-            transition: 0.1s;
+            z-index: 20; /* Ben gak ketutup bayangan */
         }
 
-        /* --- TOMBOL MATI: IRENG PEKAT (OCD PRO) --- */
         .btn-action:disabled {
             background: #111111 !important; 
             color: #444444 !important;
             box-shadow: none !important;
             cursor: not-allowed;
-            transform: translateY(4px); /* Efek mendlep pas diklik */
+            transform: translateY(3px);
         }
 
-        /* --- LAPTOP: FIX OVERLAP --- */
+        /* --- KHUSUS LAPTOP: KARTU GEDE & GAP LUAS --- */
         @media (min-width: 768px) {
             .logo-top { 
                 position: static; 
                 width: 120px; 
                 margin-bottom: 5px; 
             }
-            .container { gap: 10px; }
-            .main-title { font-size: 2.2rem; }
+            .container { 
+                gap: 25px; /* Jarak luas ben bayangan gak nimbun tombol */
+            }
+            #card-wrapper {
+                width: 100%;
+                max-width: 550px; /* Kartu dadi gede maneh */
+            }
+            .main-title { font-size: 2.3rem; margin-bottom: 10px; }
             #prize-name { font-size: 2.5rem; }
             .btn-action { font-size: 1.6rem; padding: 15px 50px; }
             #visual-hand { width: 240px; }
@@ -164,6 +168,7 @@
 
     <div class="container">
         <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
+        
         <h1 class="main-title">LUCKY PRIZE MERCHANDISE</h1>
 
         <div id="card-wrapper">
@@ -192,7 +197,7 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        const STOCK_KEY = 'umc_expo_v_final_standard_fix_v3'; 
+        const STOCK_KEY = 'umc_expo_v_final_standard_fix_v5_ocd'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
@@ -229,10 +234,10 @@
         window.addEventListener('resize', resizeCanvas);
 
         function executeScratch() {
-            btn.disabled = true; // Langsung dadi ireng
+            btn.disabled = true;
             const result = calculateResult();
             document.getElementById('prize-name').innerText = result.name;
-            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise ke panitia stand." : "Maaf ya, belum beruntung.";
+            document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise." : "Maaf ya, belum beruntung.";
             hand.style.top = "50%"; 
             setTimeout(() => {
                 sndScratch.play();
