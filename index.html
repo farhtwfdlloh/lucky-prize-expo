@@ -20,7 +20,8 @@
             background-color: var(--mc-dark);
             min-height: 100vh; 
             display: flex; flex-direction: column;
-            align-items: center; justify-content: flex-start;
+            align-items: center; 
+            justify-content: center; /* KEMBALI KE TENGAH SECARA VERTIKAL */
             color: white;
             position: relative;
             overflow-x: hidden;
@@ -49,12 +50,12 @@
             z-index: 10; 
             width: 100%;
             max-width: 600px;
-            padding: 4vh 15px 20px; 
-            display: flex; flex-direction: column; gap: 5px; 
+            padding: 20px; /* Padding seimbang */
+            display: flex; flex-direction: column; gap: 8px; 
         }
 
         .logo-top {
-            width: 85px; 
+            width: 90px; 
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             margin: 0 auto;
             cursor: pointer;
@@ -62,7 +63,7 @@
 
         .main-title { 
             margin: 5px 0 15px 0; 
-            font-size: 1.35rem; 
+            font-size: 1.3rem; 
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
@@ -95,7 +96,7 @@
         }
 
         #prize-name { 
-            font-size: 1.5rem; 
+            font-size: 1.4rem; 
             font-weight: 900; 
             margin: 0; 
             color: var(--white); 
@@ -107,7 +108,7 @@
             display: inline-block;
         }
 
-        #prize-sub { font-size: 0.95rem; color: #e0e0e0; margin-top: 15px; }
+        #prize-sub { font-size: 0.9rem; color: #e0e0e0; margin-top: 15px; }
 
         #scratch-canvas { 
             position: absolute; 
@@ -140,13 +141,11 @@
             transition: 0.2s;
         }
 
-        /* EFEK TOMBOL MATI (ABU-ABU TUA) */
         .btn-action:disabled {
             background: #333333 !important;
             box-shadow: none;
             cursor: not-allowed;
             opacity: 0.7;
-            transform: scale(0.98);
         }
 
         @media (min-width: 768px) {
@@ -155,7 +154,6 @@
             #prize-name { font-size: 2.5rem; padding: 15px 35px; }
             .btn-action { font-size: 1.6rem; padding: 15px 50px; }
             #visual-hand { width: 250px; }
-            .container { padding-top: 8vh; }
         }
 
         .zoom-in-out { animation: zoom 0.5s infinite alternate; }
@@ -197,7 +195,9 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        const STOCK_KEY = 'umc_expo_v_final_secure'; 
+        // GANTI KEY AGAR SINKRON DENGAN NAMA HADIAH BARU
+        const STOCK_KEY = 'umc_expo_v_final_sync_ok'; 
+        
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
             "STIKER UMC": 25, 
@@ -300,7 +300,6 @@
             setTimeout(() => { location.reload(); }, 6000);
         }
 
-        // ADMIN EDIT DATABASE (Klik Logo 3x)
         adminLogo.addEventListener('click', () => {
             clickCount++;
             if (clickCount === 3) {
