@@ -21,7 +21,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center; 
+            align-items: center; /* KONTEN GAME PAS TENGAH */
             color: white;
             position: relative;
             overflow: hidden;
@@ -45,11 +45,11 @@
             z-index: -1;
         }
 
-        /* --- SETTINGAN HP (OCD MODE) --- */
+        /* --- SETTINGAN HP (OCD PLUNGKERAN IJO) --- */
         .logo-top {
             position: absolute;
             top: 8vh; /* PAS NANG PLUNGKERAN IJO */
-            width: 95px; 
+            width: 90px; 
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             cursor: pointer;
             z-index: 100;
@@ -69,7 +69,7 @@
 
         .main-title { 
             margin: 0; 
-            font-size: 5.2vw; /* TETEP ONE LINE NANG HP */
+            font-size: 5.2vw; /* ONE LINE PASTI */
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
@@ -137,20 +137,16 @@
             cursor: pointer;
         }
 
-        /* --- SETTINGAN LAPTOP (FIX OVERLAP) --- */
+        /* --- FIX KHUSUS LAPTOP (ANTI-OVERLAP) --- */
         @media (min-width: 768px) {
             .logo-top { 
-                position: relative; /* BALIK JADI NORMAL BIAR GAK NIBANI */
-                top: 0; 
+                position: static; /* BALIK JADI FLOW NORMAL */
                 width: 130px; 
-                margin-bottom: 20px; 
-            }
-            .container {
-                gap: 5px; /* JARAK RAPET BIAR PRESISI */
+                margin-bottom: 5px; 
             }
             .main-title { 
                 font-size: 2.3rem; 
-                margin-bottom: 15px;
+                margin-bottom: 10px;
             }
             #prize-name { font-size: 2.6rem; }
             .btn-action { font-size: 1.7rem; }
@@ -193,7 +189,7 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        const STOCK_KEY = 'umc_expo_v_final_laptop_safe'; 
+        const STOCK_KEY = 'umc_expo_v_final_sync_gokil_ocd'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
