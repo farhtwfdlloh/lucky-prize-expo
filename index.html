@@ -21,9 +21,10 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center; /* KONTEN TETEP DI TENGAH LAYAR */
+            align-items: center; /* KONTEN PAS TENGAH LAYAR */
             color: white;
             position: relative;
+            overflow: hidden;
         }
 
         .bg-overlay {
@@ -44,7 +45,6 @@
             z-index: -1;
         }
 
-        /* CONTAINER JADI SATU PAKET */
         .container { 
             text-align: center; 
             z-index: 10; 
@@ -54,18 +54,18 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px; /* JARAK ANTAR ELEMEN BIAR GAK TABRAKAN */
+            gap: 15px; /* JARAK AMAN ANTAR ELEMEN */
         }
 
         .logo-top {
-            width: 100px; /* Ukuran pas di HP */
+            width: 95px; /* Ukuran proporsional HP */
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             cursor: pointer;
         }
 
         .main-title { 
             margin: 0; 
-            font-size: 1.3rem; 
+            font-size: 1.4rem; 
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
@@ -95,18 +95,18 @@
         }
 
         #prize-name { 
-            font-size: 1.3rem; 
+            font-size: 1.4rem; 
             font-weight: 900; 
             margin: 0; 
             color: var(--white); 
             text-transform: uppercase;
             background: var(--mc-green); 
-            padding: 10px 15px;
+            padding: 10px 20px;
             border: 3px solid var(--white); 
             border-radius: 10px;
         }
 
-        #prize-sub { font-size: 0.85rem; color: #e0e0e0; margin-top: 10px; }
+        #prize-sub { font-size: 0.9rem; color: #e0e0e0; margin-top: 10px; }
 
         #scratch-canvas { 
             position: absolute; 
@@ -127,8 +127,8 @@
 
         .btn-action {
             margin-top: 5px;
-            padding: 12px 35px;
-            font-size: 1.1rem;
+            padding: 12px 40px;
+            font-size: 1.2rem;
             font-weight: bold;
             background: var(--mc-green);
             color: white;
@@ -146,10 +146,10 @@
 
         @media (min-width: 768px) {
             .logo-top { width: 130px; }
-            .main-title { font-size: 2.2rem; margin-bottom: 10px; }
-            #prize-name { font-size: 2.3rem; padding: 15px 30px; }
-            .btn-action { font-size: 1.5rem; padding: 15px 45px; }
-            #visual-hand { width: 230px; }
+            .main-title { font-size: 2.3rem; margin-bottom: 5px; }
+            #prize-name { font-size: 2.6rem; padding: 15px 35px; }
+            .btn-action { font-size: 1.7rem; padding: 15px 50px; }
+            #visual-hand { width: 250px; }
         }
     </style>
 </head>
@@ -160,7 +160,6 @@
 
     <div class="container">
         <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
-        
         <h1 class="main-title">LUCKY PRIZE MERCHANDISE</h1>
 
         <div id="card-wrapper">
@@ -189,8 +188,7 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        /* STOCK KEY FIX SINKRON */
-        const STOCK_KEY = 'umc_expo_v_final_standard_sync'; 
+        const STOCK_KEY = 'umc_expo_v_final_sync_gokil'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
@@ -240,7 +238,6 @@
 
         function calculateResult() {
             const totalStock = Object.values(storage).reduce((a, b) => a + b, 0);
-            /* Peluang 17% */
             const winChance = Math.random() < 0.17 && totalStock > 0;
             
             if (winChance) {
@@ -255,7 +252,7 @@
                     return { win: true, name: picked };
                 }
             }
-            return { win: false, name: 'ZONK 🤪' };
+            return { win: false, name: 'ZONK 🤪' }; /* WIS TAK GANTI 🤪 SESUAI KAREPMU */
         }
 
         function startAutoScratch(isWin) {
