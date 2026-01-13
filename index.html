@@ -28,27 +28,24 @@
         }
 
         .bg-overlay {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background-image: url('image-7 (1).png'); 
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
             z-index: -2;
         }
 
         .blue-tint {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background-color: rgba(0, 74, 153, 0.75); 
             z-index: -1;
         }
 
-        /* --- HP SETTING (LOGO NANG PLUNGKERAN IJO) --- */
+        /* --- HP: LOGO NANG PLUNGKERAN IJO --- */
         .logo-top {
             position: absolute;
-            top: 6vh; /* PAS NANG PLUNGKERAN IJO */
+            top: 6vh; 
             width: 85px; 
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             cursor: pointer;
@@ -61,15 +58,14 @@
             width: 100%;
             max-width: 600px;
             padding: 10px;
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
             align-items: center;
-            gap: 12px; /* JARAK PRESISI ANTAR ELEMEN */
+            gap: 12px; 
         }
 
         .main-title { 
             margin: 0; 
-            font-size: 5vw; /* TETEP ONE LINE */
+            font-size: 5vw; /* ONE LINE PASTI */
             font-weight: 900;
             text-transform: uppercase; 
             color: var(--white);
@@ -78,11 +74,11 @@
             letter-spacing: 0.5px;
         }
 
-        /* KARTU TAK CILIKNO SITHIK BEN GAK TERLALU MENONJOL */
+        /* LOTRE TAK CILIKNO BEN GAK MENONJOL */
         #card-wrapper {
             position: relative;
-            width: 90%;
-            max-width: 450px; /* Ukuran dikurangi sithik */
+            width: 85%;
+            max-width: 420px; 
             aspect-ratio: 550 / 320;
             background: var(--mc-blue); 
             border-radius: 15px;
@@ -100,27 +96,24 @@
         }
 
         #prize-name { 
-            font-size: 1.3rem; 
+            font-size: 1.25rem; 
             font-weight: 900; 
             background: var(--mc-green); 
-            padding: 10px 18px;
+            padding: 8px 18px;
             border: 3px solid var(--white); 
             border-radius: 10px;
             text-transform: uppercase;
         }
 
         #scratch-canvas { 
-            position: absolute; 
-            top: 0; left: 0; 
+            position: absolute; top: 0; left: 0; 
             width: 100%; height: 100%;
             z-index: 5; 
         }
 
         #visual-hand {
-            position: absolute;
-            width: 140px; 
-            z-index: 99;
-            pointer-events: none;
+            position: absolute; width: 140px; 
+            z-index: 99; pointer-events: none;
             top: 110%; left: 50%;
             transform: translateX(-50%);
             transition: top 0.5s ease-out, opacity 0.5s ease-out;
@@ -128,7 +121,7 @@
 
         .btn-action {
             margin-top: 5px;
-            padding: 12px 35px;
+            padding: 12px 40px;
             font-size: 1.15rem;
             font-weight: bold;
             background: var(--mc-green);
@@ -137,23 +130,22 @@
             border-radius: 50px;
             box-shadow: 0 5px 0 #1a6d2d;
             cursor: pointer;
-            transition: 0.2s;
-            display: block; /* TETEP KETOK */
+            transition: 0.1s;
         }
 
-        /* TOMBOL MATI DADI IRENG/ABU GELAP */
+        /* --- TOMBOL MATI: IRENG PEKAT (OCD PRO) --- */
         .btn-action:disabled {
-            background: #2c3e50 !important; 
-            color: #7f8c8d !important;
-            box-shadow: none;
+            background: #111111 !important; 
+            color: #444444 !important;
+            box-shadow: none !important;
             cursor: not-allowed;
-            transform: scale(0.98);
+            transform: translateY(4px); /* Efek mendlep pas diklik */
         }
 
-        /* --- LAPTOP SETTING (ANTI-OVERLAP) --- */
+        /* --- LAPTOP: FIX OVERLAP --- */
         @media (min-width: 768px) {
             .logo-top { 
-                position: static; /* NORMAL FLOW BIAR GAK NIBANI */
+                position: static; 
                 width: 120px; 
                 margin-bottom: 5px; 
             }
@@ -172,7 +164,6 @@
 
     <div class="container">
         <img src="logo-umc.png" class="logo-top" id="admin-logo" alt="Logo Ma Chung">
-        
         <h1 class="main-title">LUCKY PRIZE MERCHANDISE</h1>
 
         <div id="card-wrapper">
@@ -201,7 +192,7 @@
         const sndScratch = document.getElementById('snd-scratch');
         const adminLogo = document.getElementById('admin-logo');
 
-        const STOCK_KEY = 'umc_expo_v_final_standard_fix_v2'; 
+        const STOCK_KEY = 'umc_expo_v_final_standard_fix_v3'; 
         
         let storage = JSON.parse(localStorage.getItem(STOCK_KEY)) || {
             "KIPAS TANGAN UMC": 5, 
@@ -238,7 +229,7 @@
         window.addEventListener('resize', resizeCanvas);
 
         function executeScratch() {
-            btn.disabled = true; // TOMBOL DADI IRENG GAK ISO DIKLIK
+            btn.disabled = true; // Langsung dadi ireng
             const result = calculateResult();
             document.getElementById('prize-name').innerText = result.name;
             document.getElementById('prize-sub').innerText = result.win ? "Selamat! Ambil merchandise." : "Maaf ya, belum beruntung.";
